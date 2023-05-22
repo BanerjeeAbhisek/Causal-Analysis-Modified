@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Fixed Effects</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christoph Hanck" />
+    <script src="FixedEffects_files/header-attrs/header-attrs.js"></script>
+    <link href="FixedEffects_files/remark-css/default.css" rel="stylesheet" />
+    <script src="FixedEffects_files/xaringanExtra-progressBar/progress-bar.js"></script>
+    <script src="FixedEffects_files/clipboard/clipboard.min.js"></script>
+    <link href="FixedEffects_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="FixedEffects_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #00ff00\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="FixedEffects_files/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="FixedEffects_files/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } },
+      });
+    </script>
+    <style>
+    .mjx-mrow a {
+      color: black;
+      pointer-events: none;
+      cursor: default;
+    }
+    </style>
+    <link rel="stylesheet" href="../assets/ude_fonts.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/ude.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# <a href='https://github.com/mca91/kausalanalyse_slides/raw/main/FixedEffects/FixedEffects.pdf'>Fixed Effects</a>
+]
+.author[
+### Christoph Hanck
+]
+.date[
+### Summer 2023
+]
+
+---
+
+layout: true
+&lt;a style="position: absolute;top:5px;left:10px;color:#004c93;" target="Overview"  href="https://kaslides.netlify.app/"&gt;<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:15px;width:16.88px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>&lt;/a&gt;
+
+---
+
+
+
+
+
+<style>.xe__progress-bar__container {
+  bottom:0;
+  opacity: 1;
+  position:absolute;
+  right:0;
+  left: 0;
+}
+.xe__progress-bar {
+  height: 0.25em;
+  background-color: #004c93;
+  width: calc(var(--slide-current) / var(--slide-total) * 100%);
+}
+.remark-visible .xe__progress-bar {
+  animation: xe__progress-bar__wipe 200ms forwards;
+  animation-timing-function: cubic-bezier(.86,0,.07,1);
+}
+@keyframes xe__progress-bar__wipe {
+  0% { width: calc(var(--slide-previous) / var(--slide-total) * 100%); }
+  100% { width: calc(var(--slide-current) / var(--slide-total) * 100%); }
+}</style>
+
+
+
+
+
+# Fixed effects
+&lt;br&gt;
+**Motivation**
+&lt;br&gt;&lt;br&gt;
+Fixed effects are often a remedy for two problems:
+&lt;br&gt;
+- Difficulty in figuring out the correct causal diagram that tells what to control for.
+- Difficulty in measuring all the variables that need to be controlled for.
+
+&lt;br&gt;
+
+.blockquote[
+### Definition: Fixed effects
+Fixed effects is a method of controlling for all variables, whether they are observed or not, as long as they stay constant within some larger category.
+]
+
+---
+#Fixed effects
+
+.vcenter[
+.blockquote[
+### Example: Effect of getting electricity on the productivity of a rural town.
+- **Backdoor**: Geography (towns up in the mountainous hillside will be more difficult to electrify) 
+
+- The same town when observed in different times will still be on the mountain
+
+- By observing the town in different years, any variation explained by town can be removed
+
+- Since there is no variation in geography that is not explained by town, after controlling for town geography will be controlled for too
+
+  &amp;rarr; There will be no variation in geography left!
+
+]]
+
+---
+# Fixed effects
+
+.vcenter[
+.blockquote[
+### Example: Effect of a visit from the German chancellor on a country’s level of trade with Germany
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="FixedEffects_files/figure-html/unnamed-chunk-2-1.png" alt="1: Causes of trade with Germany" width="55%" style="display:block; margin-right:auto; margin-left:auto;" /&gt;
+&lt;p class="caption"&gt;1: Causes of trade with Germany&lt;/p&gt;
+&lt;/div&gt;
+]]
+
+---
+# Fixed effects
+
+.vcenter[
+.blockquote[
+###Example: Effect of a visit from the German chancellor on a country’s level of trade with Germany
+
+- There are many causes of trade with Germany. Many of which would be difficult to keep track of or even measure. 
+
+- Several of these variables &amp;mdash; the country’s geography, the culture of the population, and the history that country has with Germany &amp;mdash; are constant *within* country.
+
+- The causal diagram can be redrawn...
+]]
+
+---
+# Fixed effects
+
+.vcenter[
+.blockquote[
+### Example: Effect of a visit from the German chancellor on a country’s level of trade with Germany
+
+The effect can be identified *without* controling for each of the variables &amp;mdash; controlling only for country would be enough.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="FixedEffects_files/figure-html/unnamed-chunk-3-1.png" alt="2: Simplified causes of trade with Germany" width="55%" style="display:block; margin-right:auto; margin-left:auto; margin-top:30px" /&gt;
+&lt;p class="caption"&gt;2: Simplified causes of trade with Germany&lt;/p&gt;
+&lt;/div&gt;
+
+]]
+
+---
+# Fixed effects
+&lt;br&gt;
+
+- In fixed effects, **individuals** are controlled for. The **individual** can represent “person,” “company,” “school,” or “country,” and so on.
+
+- This idea is to remove variation *between* individuals:
+
+  Sweeping away all that variation between individuals, any variables that are *fixed over time* can be controlled for.
+  
+- Since fixed effects removes between variation, it is not a suitable approach when between variation is of interest!
+
+**So what does fixed effects actually do to the data?**
+
+We isolate **within variation** by finding differences between groups (individuals) and subtract them out. 
+
+---
+exclude: true
+# Fixed effects
+
+.vcenter[
+
+.blockquote[
+###Example: Effect of exercise on the number of times a year a person gets a cold
+
+Consider two people A and B. There are variables like “genetics” that are fixed over time and hence can be adjusted for with fixed effects.
+
+|Individual|Year|Exercise|
+|:------:|:------:|:------:|
+|Person A|2019|5|
+|Person A|2020|7|
+|Person B|2019|4|
+|Person B|2020|3|
+
+&lt;br&gt;
+]]
+
+---
+exclude: true
+# Fixed effects
+
+.vcenter[
+.blockquote[
+###Example: Effect of exercise on the number of times a year a person gets a cold
+
+- To get the within and between variation, the within-individual means are required
+
+- The difference between individuals in the means is the between variation 
+
+|Individual|Year|Exercise|Mean Exercise|Within Exercise|
+|:------:|:------:|:------:|:------:|:------:|
+|Person A|2019|5|6.0|-1.0|
+|Person A|2020|7|6.0|1.0|
+|Person B|2019|4|3.5|0.5|
+|Person B|2020|3|3.5|-0.5|
+&lt;br&gt;
+]]
+
+---
+exclude: true
+# Fixed effects
+
+.vcenter[
+.blockquote[
+### Example: Effect of exercise on the number of times a year a person gets a cold.
+
+- Subtracting out individual means, we are left with variation from time period to time period, relative to the averages (the **within variation**)
+
+- So person A's within variation in exercise compares the fact that in 2019 she exercised half an hour per week more than average, and in 2020 she exercised half and hour per week less than average
+
+]]
+
+---
+# Fixed effects
+
+.vcenter[
+.blockquote[
+### Example: Effects of healthy-eating reminders on actual healthy eating
+
+- Four subjects have each downloaded an app that, at random times, reminds them to eat healthy
+
+- They have chosen how frequently they want reminders, but do not control exactly on which days they come
+
+- It is recorded how often they get reminders, and also scored them on how healthy they eat
+
+- There are two kinds of variations here: 
+ - Variation over time in how intensively each individual gets reminders (treatment)
+ - Variation in their healthy eating
+
+]]
+
+---
+# Fixed effects
+.blockquote[
+### Example: Effects of healthy-eating reminders on actual healthy eating&amp;mdash;ctd.
+
+There might be back doors that influence reminder frequency and also general healthy-eating level. 
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="FixedEffects_files/figure-html/unnamed-chunk-4-1.png" alt="3: Healthy eating reminders and healthy eating for four individuals" width="65%" style="display:block; margin-right:auto; margin-left:auto;" /&gt;
+&lt;p class="caption"&gt;3: Healthy eating reminders and healthy eating for four individuals&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+# Fixed effects
+.blockquote[
+### Example: Effects of healthy-eating reminders on actual healthy eating&amp;mdash;ctd.
+
+Compute the mean number of reminders and mean healthy eating scores for each individual.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="FixedEffects_files/figure-html/unnamed-chunk-5-1.png" alt="4: Healthy eating reminders and healthy eating for four individuals with individual means" width="65%" style="display:block; margin-right:auto; margin-left:auto;" /&gt;
+&lt;p class="caption"&gt;4: Healthy eating reminders and healthy eating for four individuals with individual means&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+# Fixed effects
+.vcenter[
+.blockquote[
+###Example: Effects of healthy-eating reminders on actual healthy eating&amp;mdash;ctd.
+
+- The next task is to remove any variation *between* individuals 
+
+- All four crosses are slided on top of each other
+
+- The data gets centered at 0 on both the `\(X\)` and `\(Y\)` axis when plotted with the four individuals’ within-variation alone
+]]
+---
+# Fixed effects
+
+.blockquote[
+### Example: Effects of healthy-eating reminders on actual healthy eating&amp;mdash;ctd.
+
+With the different individuals moved on top of each other, a more clear picture emerges, with a positive relationship between the intensity of reminders and the scores. 
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="FixedEffects_files/figure-html/unnamed-chunk-6-1.png" alt="5: Healthy eating reminders and healthy eating for four individuals with individual means" width="60%" style="display:block; margin-right:auto; margin-left:auto;" /&gt;
+&lt;p class="caption"&gt;5: Healthy eating reminders and healthy eating for four individuals with individual means&lt;/p&gt;
+&lt;/div&gt;
+]
+
+---
+# Fixed effects
+&lt;br&gt;
+**Fixed effects can be performed with regression**
+
+Fixed effects regressions generally start with a regression equation 
+
+`$$Y_{it}=\beta_i+\beta_1X_{it} +\epsilon_{it}$$`
+ - `\(X\)` has subscript `\(it\)` indicating that the data varies both between individuals `\(i\)` over time `\(t\)`
+ 
+ - The intercept term `\(\beta\)` has subscript `\(i\)`, indexing individuals 
+
+**Why do individual-specific intercepts yield fixed effect estimates where only within variation is used?**
+
+Breaking up the intercept is equivalent to adding a *control for each person*.
+
+---
+# Fixed effects
+&lt;br&gt;
+**How to estimate a regression with individual intercepts?**
+&lt;br&gt;
+
+There are two common methods:
+
+&lt;br&gt;
+
+**Method 1:** extracting the within variation (absorbing the fixed effects).
+  1. Obtain `\(Y_{it}-\bar{Y}_i\)`, i.e., for each individual subtract the individual specific mean `\(\bar{Y}_i\)` from the dependent variable `\(Y_{it}\)`
+  2. Do the same for the independent variables `\(X_{it}-\bar{X_i}\)`.
+  3. Run the regression `$$Y_{it}-\bar{Y_i}=\beta_0+\beta_1(X_{it}-\bar{X_i})+\epsilon_{it}$$`
+
+
+---
+# Fixed effects
+&lt;br&gt;
+**How to estimate a regression with individual intercepts?**
+
+**Method 2:** adding a binary control variable for the individuals
+
+Run the regression `$$Y_{it} = \beta_0 + \beta_{0,1} + \dots +\beta_{0,N-1} + \beta_1 X_{it} + \epsilon_{it}$$` with `\(N\)` the number of individuals.
+
+**Caution**
+
+- If the model includes an intercept, then including every individual will make the model impossible to estimate, so leave one out, or leave the intercept out (we leave out `\(\beta_{0,N}\)` here)!
+
+- That individual without an own intercept is still in the analysis, but it does not get its own coefficient: estimates are interpreted *relative* to that individual.
+  
+  
+---
+# Fixed effects
+&lt;br&gt;
+**How to interpret the results of this regression once it is estimated?**
+
+&lt;br&gt;
+
+- The interpretation of the slope coefficient in a fixed effects model is the same as when controlled for any other variable
+
+- Sometimes researchers will use the fixed individual effects estimates to make claims about the individuals being evaluated 
+  
+
+
+---
+# Fixed effects
+&lt;br&gt;
+**Some notes on fixed effects**
+
+&lt;br&gt;
+
+- Fixed effects is a good way of controlling for a long list of unobserved variables that are fixed over time when we are interested in the effect of (a few) time-varying variables
+
+- Those individual effects do not have the same luxury of controlling for a bunch of unobserved *time-varying* variables
+
+- The fixed effects estimates *cannot* be thought of as causal!
+
+- Fixed Effects focuses on *within* variation. So the treatment effect estimated will focus a lot more heavily on people with a lot of within variation.
+
+---
+# Fixed effects
+&lt;br&gt;
+**Why not include multiple sets of fixed effects?**
+
+&lt;br&gt;
+Consider the same individuals are observed over multiple years. We then could include 
+
+- fixed effects for individuals, *comparing individuals to themselves at different periods* of time 
+- fixed effects for year, *comparing individuals to each other* at the same period of time
+
+Including both is commonly known as **two-way fixed effects**, `$$Y_{it}=\beta_i+\beta_t+\beta_1X_{it}+\epsilon_{it}.$$`
+
+This gives the variation that is left as being variation relative to what is expected given that individual, and given that year.
+
+---
+# Fixed effects
+
+.blockquote[
+### Example: The effect of experience of in-job training on pay at that job
+
+- Data is on how much each person earns per year `\(Y_{it}\)` and on how many hours of training they received that year `\(X_{it}\)`. Overall earnings in 2009 were $10,000 below what they normally are (due to recession)
+
+- Anthony earns $120,000 per year, more than the average person ($40,000). In 2009 Anthony only earned $116,000 which is above average, but that can be explained by the fact that Anthony earns a lot.
+
+  - Given that the individual is Anthony, it is $4,000 below average. 
+  - But given that the year is 2009, most people are earning $10,000 less, but Anthony is only earning $4,000 less. 
+  - So given that it is Anthony, and given that it is 2009, Anthony's earning in 2009 is $6,000 more than expected.
+]
+
+---
+# Fixed effects
+&lt;br&gt;
+**Estimating a model with multiple fixed effects**
+
+&lt;br&gt;
+- ... can be done using the same **binary controls** approach as for the regular (one-way) fixed effects estimator with only one set of fixed effects 
+
+- However, this can be difficult if there are lots of different fixed effects to estimate. 
+
+- Unless the fixed effects only have a few categories each, it is generally advised to use a method specifically 
+designed to handle multiple sets of fixed effects.
+
+- These methods usually use something called **alternating projections.**
+
+
+
+---
+# Random effects
+&lt;br&gt;
+**What it is**
+- Instead of letting the `\(\beta_is\)` be anything, random effects puts some structure on them 
+
+- Random effects assumes that the `\(\beta_i\)` come from a known distribution, for example assuming that the `\(\beta_is\)` follow a normal distribution
+
+- The idea is to use a weighted average of within and between variation (instead of just the within variation)
+
+**Why it can be useful**
+&lt;br&gt;
+- More precise estimates (lower standard errors)
+
+- Improved estimation of the individual `\(\beta_i\)` effects
+
+- Random effects solves the same back door problem that fixed effects does if the `\(\beta_i\)` terms are *unrelated* to the right-hand-side variables `\(X_{it}\)`
+
+
+
+---
+# Fixed effects vs. random effects
+&lt;br&gt;
+**Comparison**
+&lt;br&gt;&lt;br&gt;
+
+- Fixed effects are used to *solve a research design problem*.
+
+- Random effects only solves the *same problem* if the individual fixed effects are *unrelated to the right-hand-side 
+variables*, including our treatment variable
+
+  That seems unlikely!
+
+- For this reason, fixed effects is almost always preferred to random effects
+
+- **Durbin-Wu-Hausman test** is useful in this context.
+
+---
+# Fixed effects vs. random effects
+
+&lt;br&gt;&lt;br&gt;
+
+.blockquote[
+### Definition: Durbin-Wu-Hausman test
+The Durbin-Wu-Hausman test is a broad set of tests that compare the estimates in one model against the estimates in another and sees if they are different. 
+]
+
+&lt;br&gt;
+
+**The idea of the test**
+
+If the estimates of fixed effects and random effects are found to *not* be different (i.e., the test *fails* to reject the null hypothesis), then the relationship between `\(\beta_i\)` and `\(X_{it}\)` probably is not too strong.
+
+  &amp;rarr; Random effects can be used.
+
+
+---
+
+# Fixed effects
+&lt;br&gt;
+**Clustered standard errors**
+&lt;br&gt;
+
+**Motivation**
+
+- An assumption of the regression model is that the errors are independent. Then parts of the DGP for the outcome variable that are not in the model are effectively random.
+
+   This assumption can be *useful to obtain correct regression standard errors* !
+
+- However, this assumption is difficult when it comes to fixed effects:
+
+- If parts of the DGP that are left out are shared across all an individual's or a group’s observations, there will be correlation. 
+
+  &amp;rarr; **Classic standard errors will be wrong**.
+
+- For this reason **clustered standard errors** are used
+
+---
+# Clustered standard errors
+
+.vcenter[
+.blockquote[
+###Definition: Clustered standard errors
+Standard errors clustered at the same level as the fixed effect are called *clustered standard errors*. Clustered standard errors calculate the standard errors while allowing some level of correlation between the error terms.
+
+&lt;br&gt;
+**Examples**
+
+- For person fixed effects, using standard errors clustered at the person level
+- For city fixed effects, using standard errors clustered at the city level
+
+
+
+]]
+
+---
+# Clustered standard errors
+&lt;br&gt;
+**Conditions**
+ 
+&lt;br&gt;
+
+- Clustered Standard Errors are necessary when there is **treatment effect heterogeneity.** That is, the treatment effect must be *different for different individuals*.
+- Also, either the fixed effect groups/individuals in the data need to be a non-random sample of the population, or, within fixed effect groups/individuals, the treatment variable is assigned in a clustered way.
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Fixed effects in nonlinear models
+&lt;br&gt;
+**Why might this be a problem?**
+
+&lt;br&gt;
+
+Recall that adding a set of binary control variables is a method to get rid of between variation.
+
+- That is fine in a linear model, but in a nonlinear model we might run into the so-called **incidental parameters problem**
+  
+  &amp;rarr; The estimates start getting bad.
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Fixed effects in nonlinear models
+&lt;br&gt;
+**Why might this be a problem?**
+
+&lt;br&gt;
+- The other methods for getting rid of between variation is subtracting out the within-group means. 
+ - This no longer works because the outcome variable is not a continuous variable any more
+ - The mean is no longer a good representation of _what needed to be substracted out to get rid of the between variation._
+
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Fixed effects in nonlinear models
+&lt;br&gt;
+**What to do then?**
+
+&lt;br&gt;
+There are two common approaches to use a fixed effects design when there is  a nonlinear dependent variable:
+
+1. Drop the *nonlinear* part and estimate a *linear* model anyway with the nonlinear dependent variable. This is especially common when the dependent variable is binary or ordinal
+
+2. Use a nonlinear model variant that is designed to handle fixed effects properly 
+
+(Examples will be discussed in the R tutorials.)
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Advanced random effects
+&lt;br&gt;
+**Hierachical modeling**
+
+- Modern approaches to random effects consider models that contain *multiple levels*
+
+- This seems natural &amp;mdash; in any fixed effects setting, the data is **hierarchical:**
+  
+  At the very least we have multiple observations over time within individuals. E.g., if the model is
+`$$Y_{it}=\beta_i+\beta_1X_{it}+\epsilon_{it}$$`
+  It can be said that `\(\beta_1\)` has its own model equation,
+`$$\beta_i=\beta_0+\gamma_1Z_i+\mu_i$$`
+where `\(Z_i\)` is a set of individual-level variables that determine the individual effect and `\(\mu_i\)` is an error.
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Advanced random effects
+&lt;br&gt;
+**Hierarchical modeling**
+
+- This allows us to deal with the correlation between the `\(\beta_i\)` and the `\(X_{it}\)` becaused it is *modelled directly*
+
+- The approach has the nice statistical properties that random effects gives over fixed effects, but *without imposing as many additional assumptions*.
+
+  - Hierarchical modelling allows to look at the effect of variables that are constant within individual
+  
+  - It also allows explicitly to analyse between and within effects separately
+
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Advanced random effects
+&lt;br&gt;
+**Hierarchical modeling**
+
+There are two directions to go with this multi-level intuition.
+
+&lt;br&gt;
+**Direction 1**
+
+- Calculate within-individual means for each predictor `\(\bar{X_i}\)`
+
+- Obtain the within variation for each predictor `\((X_{it}-\bar{X_i})\)`
+
+- Regress the dependent variable on the within-individual means `\(\bar{X_i}\)` , the within variation `\((X_{it}-\bar{X_i})\)` and any other individual-level controls `\(Z_i\)` , and use random effects for the intercept
+
+- This is referred to as **correlated random effects**
+
+
+---
+# <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:45px;width:50.62px;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M384 64c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H448v96c0 17.7-14.3 32-32 32H320v96c0 17.7-14.3 32-32 32H192v96c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h96V320c0-17.7 14.3-32 32-32h96V192c0-17.7 14.3-32 32-32h96V64z"/></svg> Advanced random effects
+&lt;br&gt;
+**Hierarchical modeling**
+
+&lt;br&gt;
+**Direction 2** 
+
+- The other way is the multi-level intuition, which is whole hog into mixed models, also known as **hierarchical linear models.**
+
+- In mixed models stopping at the intercept following a random distribution is not required
+
+- The following models can get complex, but they can be used to represent very complex interactions between variables:
+`$$Y_{it}=\beta_{0i}+\beta_{1i}X_{it}+\epsilon_{it}$$`
+`$$\beta_{0i}=\beta_0+\gamma_1Z_i+\mu_i$$`
+`$$\beta_{1i}=\beta_1+\delta_1Z_i+\eta_i$$`
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../assets/remark-zoom.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

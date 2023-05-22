@@ -1,0 +1,58 @@
+---
+title: "Overview"
+author: "Christoph Hanck"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    seal: false
+    includes:
+      in_header: "assets/meta.html"
+    self_contained: false # if true, fonts will be stored locally
+    lib_dir: libs
+    css: ["default", "assets/ude_fonts.css", "assets/ude.css", "assets/custom.css", "assets/title_slides.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+class: title-slide title-index 
+.font80[
+# Causal Analysis
+### (Kausalanalyse)
+
+.pull-left[
+
+<ol start=0>
+  <li> <a href="Introduction/Introduction.html">Introduction</a></li>
+</ol>
+
+**Research Design**
+
+2. [Research Questions](ResearchQuestions/ResearchQuestions.html)
+3. [Identification](Identification/Identification.html)
+4. [Causal Diagrams](CausalDiagrams/CausalDiagrams.html)
+5. [Drawing Causal Diagrams](DrawingCausalDiagrams/DrawingCausalDiagrams.html)
+6. [Causal Paths](CausalPaths/CausalPaths.html)
+7. [Front Doors](FindingFrontDoors/FindingFrontDoors.html)
+8. [Treatment Effects](TreatmentEffects/TreatmentEffects.html)
+]
+
+.pull-right[
+
+**Econometric Toolbox**
+
+<ol start=8>
+<li><a href='Matching/Matching.html'>Matching</a></li>
+<li><a href='Simulation/Simulation.html'>Simulation</a></li>
+<li><a href='FixedEffects/FixedEffects.html'>Fixed Effects</a></li>
+<li><a href='EventStudies/EventStudies.html'>Event Studies</a></li>
+<li><a href='DiD/DiD.html'>Difference-in-Differences</a></li>
+<li><a href='IV/IV.html'>Instrumental Variables</a></li>
+<li><a href='RDD/RDD.html'>Regression Discontinuity</a></li>
+<li><a href='FurtherTopics/FurtherTopics.html'>Further selected topics</a></li>
+</ol>
+
+]]
+
