@@ -276,7 +276,7 @@ Causal diagrams were developed in the mid-1990s by the computer scientist Judea 
 
 .blockquote[
 ### Definition: Causal diagram
-A causal diagram is a graphical representation of a data generating process (DGP). Variables in the DGP are represented by nodes. The causal relationships in the DGP, each represented by an arrow from the cause variable to the caused variable.
+A causal diagram is a graphical representation of a data generating process (DGP). Variables in the DGP are represented by nodes, and the causal relationships in the DGP are depicted by arrows, with each arrow pointing from the cause variable to the effect variable.
 ]
 
 .footnote[
@@ -421,7 +421,7 @@ Some assumptions are:
  - Lagged police per capita does not cause current police per capita 
  - Recent popular crime movies do not cause crime
 
-There are arrows that are <u>not</u> there. These are just as important parts of a DAG!
+These are arrows that are <u>not</u> there. These are just as important parts of a DAG!
 
 It's a balancing act &mdash; omitting movies is okay, omitting the poverty rate likely is not!
 
