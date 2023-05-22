@@ -179,12 +179,14 @@ There are also some “weasel words” that don’t technically say anything abo
 
 
 We can say $X$ causes $Y$ by saying:
-- $X$ causes $Y$
-- $X$ affects $Y$
-- The effect of $X$ on $Y$
-- $X$ influences $Y$ 
+- $X$ causes $Y$ (e.g. Many studies suggest that eating chocolate causes weight gain)
+- $X$ affects $Y$ (e.g.Various factors affect the success of a business)
+- The effect of $X$ on $Y$ (e.g.The effect of social media on mental health is thought to be significant)
+- $X$ influences $Y$ (e.g.The effect of diet influences overall health)
 
 ---
+
+
 ## Why are Weasel words important?
 
 - Knowing these terms can help interpreting what scientific studies are really saying, and when someone might be trying to be misleading:
