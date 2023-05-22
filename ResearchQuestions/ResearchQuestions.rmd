@@ -92,6 +92,7 @@ htmltools::tagList(
 ]
 
 ---
+
 # Why research needs a design
 
 .vcenter[
@@ -110,6 +111,7 @@ htmltools::tagList(
 ]
 
 ---
+
 # What is a research question anyway?
 
 .vcenter[
